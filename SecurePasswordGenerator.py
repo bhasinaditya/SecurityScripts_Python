@@ -1,6 +1,6 @@
 """
 Python script to generate secure passwords.
-The gui enables tweaking the desired password paramters
+The gui enables tweaking the desired password parameters
 
 """
 
