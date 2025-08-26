@@ -8,6 +8,7 @@ import tkinter as tk
 from tkinter import ttk
 import random
 import string
+import pyperclip
 
 def generate_password():
     length = length_var.get()
@@ -24,10 +25,17 @@ def generate_password():
 
     if not characters:
         result_label.config(text="Please select at least one character type!")
+        copy_button.pack_forget()
         return
 
     password = ''.join(random.choice(characters) for _ in range(length))
     result_label.config(text=f"Generated Password: {password}")
+    copy_button.pack(pady=5)
+
+def copy_to_clipboard():
+    password = result_label.cget("text").replace("Generated Password: ", "")
+    if password and "Please select" not in password:
+        pyperclip.copy(password)
 
 # Create main window
 root = tk.Tk()
@@ -36,8 +44,8 @@ root.geometry("300x400")
 
 # Length spinbox with label to show value
 tk.Label(root, text="Password Length:").pack(pady=5)
-length_var = tk.IntVar(value=16)
-length_spinbox = tk.Spinbox(root, from_=8, to=32, textvariable=length_var, width=5)
+length_var = tk.IntVar(value=12)
+length_spinbox = tk.Spinbox(root, from_=8, to=25, textvariable=length_var, width=5)
 length_spinbox.pack(pady=5)
 length_label = tk.Label(root, text=f"Password Length: {length_var.get()}")
 length_label.pack(pady=5)
@@ -59,14 +67,15 @@ tk.Checkbutton(root, text="Numbers (123)", variable=digit_var).pack(pady=2)
 tk.Checkbutton(root, text="Symbols (!#$)", variable=symbol_var).pack(pady=2)
 
 # Generate button
-tk.Button(root, text="Generate Password", command=generate_password).pack(pady=20)
+tk.Button(root, text="Generate Password", command=generate_password).pack(pady=10)
 
 # Result label
 result_label = tk.Label(root, text="Generated Password: ")
 result_label.pack(pady=20)
 
-# Start the application
-root.mainloop()
+# Copy button (initially hidden)
+copy_button = tk.Button(root, text="Copy to Clipboard", command=copy_to_clipboard)
+copy_button.pack_forget()
 
 # Start the application
 root.mainloop()
