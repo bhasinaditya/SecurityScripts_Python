@@ -34,11 +34,18 @@ root = tk.Tk()
 root.title("Password Generator")
 root.geometry("300x400")
 
-# Length slider
+# Length spinbox with label to show value
 tk.Label(root, text="Password Length:").pack(pady=5)
 length_var = tk.IntVar(value=16)
-length_slider = ttk.Scale(root, from_=8, to=32, variable=length_var, orient="horizontal")
-length_slider.pack(pady=5)
+length_spinbox = tk.Spinbox(root, from_=8, to=32, textvariable=length_var, width=5)
+length_spinbox.pack(pady=5)
+length_label = tk.Label(root, text=f"Password Length: {length_var.get()}")
+length_label.pack(pady=5)
+
+# Update label when spinbox value changes
+def update_label(*args):
+    length_label.config(text=f"Password Length: {length_var.get()}")
+length_var.trace('w', update_label)
 
 # Checkboxes for character types
 lower_var = tk.BooleanVar(value=True)
@@ -57,6 +64,9 @@ tk.Button(root, text="Generate Password", command=generate_password).pack(pady=2
 # Result label
 result_label = tk.Label(root, text="Generated Password: ")
 result_label.pack(pady=20)
+
+# Start the application
+root.mainloop()
 
 # Start the application
 root.mainloop()
