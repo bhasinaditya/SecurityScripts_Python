@@ -1,3 +1,7 @@
+"""
+Python script to extract domain from a long URL.
+"""
+
 import tkinter as tk
 from urllib.parse import urlparse
 import pyperclip
